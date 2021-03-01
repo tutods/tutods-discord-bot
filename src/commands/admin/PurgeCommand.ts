@@ -52,7 +52,6 @@ export const run: RunFunction = async (client, message) => {
 
 	// Have user
 	if (user) {
-		console.log('HAVEMOS USER');
 		// Get only user ID
 		const userId = user.replace('<', '').replace('>', '').replace('@!', '');
 

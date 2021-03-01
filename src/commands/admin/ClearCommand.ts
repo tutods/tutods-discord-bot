@@ -1,6 +1,7 @@
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { TextChannel } from 'discord.js';
 import { discord } from '../../configs/environment';
-import { formatCreatedAt } from '../../functions/FormatCreatedAt';
+import { ETitleType } from '../../enums/ETitleType';
+import { LogToChannel } from '../../functions/Log';
 import { RunFunction } from '../../interfaces/ICommand';
 
 export const run: RunFunction = async (client, message) => {
@@ -40,21 +41,9 @@ export const run: RunFunction = async (client, message) => {
 
 		// Warning to limit of messages to delete
 		if (number > 100) {
-			await messageChannel.send(
-				new MessageEmbed({ color: 'YELLOW' })
-					.setDescription(
-						`The limit of messages to delete is 100.\nPlease try again!`
-					)
-					.setTitle('⚠️ Attention')
-					.setFooter(
-						`${message.author.tag} • ${formatCreatedAt(
-							message.createdAt
-						)}`,
-						message.author.displayAvatarURL({
-							format: 'png',
-							dynamic: true,
-						})
-					)
+			new LogToChannel(client, message).post(
+				ETitleType.Warning,
+				`The limit of messages to delete is 100.\nPlease try again!`
 			);
 
 			return;
@@ -73,71 +62,44 @@ export const run: RunFunction = async (client, message) => {
 			})
 			.then((messages) => {
 				const messagesToDelete = [];
+				let userData = undefined;
 
 				messages
 					.filter((m) => m.author.id === userId)
 					.map((msg) => {
+						userData = msg.author.username;
+
 						if (messagesToDelete.length <= number - 1)
 							messagesToDelete.push(msg);
 					});
 
 				messageChannel
 					.bulkDelete(messagesToDelete)
+					.then(async () => {
+						await new LogToChannel(client, message).post(
+							ETitleType.Info,
+							`**${message.author.username}** request delete ${number} messages of **${userData}**!`,
+							discord.logChannelId
+						);
+					})
 					.catch(async (err) => {
-						await message.channel.send(
-							client.embed(
-								{
-									description: `Error: ${err}`,
-								},
-								message
-							)
+						await new LogToChannel(client, message).post(
+							ETitleType.Error,
+							`Error deleting messages: ${err}`,
+							discord.logChannelId
 						);
 					});
 			});
 	} else {
 		// Delete messages
 		messageChannel.bulkDelete(number).catch(async (err) => {
-			const targetChannel = message.guild.channels.cache.get(
+			await new LogToChannel(client, message).post(
+				ETitleType.Error,
+				`Error deleting messages: ${err}`,
 				discord.logChannelId
-			) as TextChannel;
-
-			if (targetChannel) {
-				await targetChannel.send(
-					new MessageEmbed({ color: 'RED' })
-						.setDescription('Upps! Not possible delete messages!')
-						.setTitle('❌ Error')
-						.setFooter(
-							`${message.author.tag} • ${formatCreatedAt(
-								message.createdAt
-							)}`,
-							message.author.displayAvatarURL({
-								format: 'png',
-								dynamic: true,
-							})
-						)
-				);
-			}
+			);
 		});
 	}
-
-	// else {
-	// 	// Delete messages
-	// 	messageChannel.bulkDelete(number).catch(async (err) => {
-	// 		await messageChannel.send(
-	// 			new MessageEmbed({ color: 'RED' })
-	// 				.setDescription(err)
-	// 				.setTitle('❌ Error')
-	// 				.setFooter(
-	// 					`${message.author.tag} • ${formatCreatedAt(
-	// 						message.createdAt
-	// 					)}`,
-	// 					message.author.displayAvatarURL({
-	// 						format: 'png',
-	// 						dynamic: true,
-	// 					})
-	// 				)
-	// 		);
-	// 	});
 };
 
 export const name: string = 'purge';

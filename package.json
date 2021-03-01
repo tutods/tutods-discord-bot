@@ -1,0 +1,44 @@
+{
+	"name": "discord-bot",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"start": "node dist/index.js",
+		"rimraf": "./node_modules/rimraf/bin.js",
+		"prebuild": "rimraf dist/",
+		"build": "tsc",
+		"dev": " ts-node-dev --respawn --transpile-only --poll ./src/index.ts",
+		"format": "prettier --write ."
+	},
+	"dependencies": {
+		"axios": "^0.21.1",
+		"consola": "^2.15.3",
+		"discord.js": "^12.5.1",
+		"glob": "^7.1.6"
+	},
+	"devDependencies": {
+		"@types/axios": "^0.14.0",
+		"@types/glob": "^7.1.3",
+		"@types/node": "^14.14.31",
+		"@types/ws": "^7.4.0",
+		"husky": "=4",
+		"lint-staged": "^10.5.4",
+		"prettier": "^2.2.1",
+		"rimraf": "^3.0.2",
+		"ts-node-dev": "^1.1.6",
+		"typescript": "^4.2.2"
+	},
+	"lint-staged": {
+		"*.{js,ts,json,scss,css,html,tsx,jsx}": [
+			"prettier --write .",
+			"git add ."
+		],
+		"*.{js,css,md}": "prettier --write"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	}
+}

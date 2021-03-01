@@ -99,7 +99,7 @@ export const run: RunFunction = async (client, message) => {
 		messageChannel.bulkDelete(number).catch(async (err) => {
 			const targetChannel = message.guild.channels.cache.get(
 				discord.logChannelId
-			);
+			) as TextChannel;
 
 			if (targetChannel) {
 				await targetChannel.send(

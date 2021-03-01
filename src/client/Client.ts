@@ -11,13 +11,13 @@ import glob from 'glob';
 import { promisify } from 'util';
 import { formatCreatedAt } from '../functions/FormatCreatedAt';
 import { ICommand } from '../interfaces/ICommand';
-import { IConfig } from '../interfaces/IConfig';
+import { IDiscordEnv } from '../interfaces/IConfig';
 import { IEvent } from '../interfaces/IEvent';
 
 const globPromise = promisify(glob);
 
 class Bot extends Client {
-	public config: IConfig;
+	public config: IDiscordEnv;
 
 	public logger: Consola = consola;
 
@@ -34,7 +34,7 @@ class Bot extends Client {
 		});
 	}
 
-	public async start(env: IConfig): Promise<void> {
+	public async start(env: IDiscordEnv): Promise<void> {
 		this.config = env;
 
 		this.login(env.token);

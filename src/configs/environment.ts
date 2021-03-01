@@ -1,8 +1,14 @@
-import { IConfig } from '../interfaces/IConfig';
+import { IApisEnv, IDiscordEnv } from '../interfaces/IConfig';
 import * as config from './../../config.json';
 
-export const discord: IConfig = {
-	token: config.token || '',
-	prefix: config.prefix || '!',
-	logChannelId: config.logChannelId || '',
+const { discord, apis } = config;
+
+export const discordEnv: IDiscordEnv = {
+	token: discord.token || '',
+	prefix: discord.prefix || '!',
+	logChannelId: discord.logChannelId,
+};
+
+export const apisEnv: IApisEnv = {
+	currencyApi: apis.currencyApi,
 };

@@ -4,8 +4,8 @@ import { ETitleType } from '../enums/ETitleType';
 import { formatCreatedAt } from './FormatCreatedAt';
 
 class LogToChannel {
-	client: Client;
-	message: Message;
+	public client: Client;
+	public message: Message;
 
 	constructor(client: Client, message: Message) {
 		this.client = client;
@@ -36,7 +36,14 @@ class LogToChannel {
 			}
 		} else {
 			this.message.channel.send(
-				new MessageEmbed({ color: 'RANDOM' })
+				new MessageEmbed({
+					color:
+						title === ETitleType.Error
+							? 'RED'
+							: title === ETitleType.Info
+							? 'BlUE'
+							: 'YELLOW',
+				})
 					.setDescription(description)
 					.setTitle(title)
 					.setFooter(

@@ -1,12 +1,14 @@
 import { TextChannel } from 'discord.js';
-import { discord } from '../../configs/environment';
+import { discordEnv } from '../../configs/environment';
 import { ETitleType } from '../../enums/ETitleType';
 import { LogToChannel } from '../../functions/Log';
 import { RunFunction } from '../../interfaces/ICommand';
 
 export const run: RunFunction = async (client, message) => {
+	const logToChannel = new LogToChannel(client, message);
+
 	const args = message.content
-		.slice(discord.prefix.length)
+		.slice(discordEnv.prefix.length)
 		.trim()
 		.split(/\s+/g)
 		.slice(1);
@@ -26,22 +28,24 @@ export const run: RunFunction = async (client, message) => {
 		return;
 	}
 
-	let number = 1;
+	let count = 1;
 	let user = undefined;
 
-	// Pass args (for example number or user)
 	if (args.length > 0) {
-		// Verify if have number or only number
-		if (args[0].includes('<@')) {
-			user = args[0];
-		} else {
-			number = Number(args[0]);
-			user = args[1] || undefined;
+		if (message.mentions.users.first()) {
+			user = message.mentions.users.first();
+		}
+
+		if (
+			parseInt(args[0]) &&
+			args[0] !== message.mentions.users.first().toString()
+		) {
+			count = parseInt(args[0]);
 		}
 
 		// Warning to limit of messages to delete
-		if (number > 100) {
-			new LogToChannel(client, message).post(
+		if (count > 100) {
+			logToChannel.post(
 				ETitleType.Warning,
 				`The limit of messages to delete is 100.\nPlease try again!`
 			);
@@ -52,9 +56,6 @@ export const run: RunFunction = async (client, message) => {
 
 	// Have user
 	if (user) {
-		// Get only user ID
-		const userId = user.replace('<', '').replace('>', '').replace('@!', '');
-
 		message.channel.messages
 			.fetch({
 				limit: 100,
@@ -64,40 +65,47 @@ export const run: RunFunction = async (client, message) => {
 				let userData = undefined;
 
 				messages
-					.filter((m) => m.author.id === userId)
+					.filter((m) => m.author.id === user.id)
 					.map((msg) => {
-						userData = msg.author.username;
-
-						if (messagesToDelete.length <= number - 1)
+						if (messagesToDelete.length <= count - 1)
 							messagesToDelete.push(msg);
 					});
 
 				messageChannel
 					.bulkDelete(messagesToDelete)
 					.then(async () => {
-						await new LogToChannel(client, message).post(
+						logToChannel.post(
 							ETitleType.Info,
-							`**${message.author.username}** request delete ${number} messages of **${userData}**!`,
-							discord.logChannelId
+							`**${message.author.username}** delete ${count} messages of **${user.username}**!`,
+							discordEnv.logChannelId
 						);
 					})
 					.catch(async (err) => {
-						await new LogToChannel(client, message).post(
+						logToChannel.post(
 							ETitleType.Error,
 							`Error deleting messages: ${err}`,
-							discord.logChannelId
+							discordEnv.logChannelId
 						);
 					});
 			});
 	} else {
 		// Delete messages
-		messageChannel.bulkDelete(number).catch(async (err) => {
-			await new LogToChannel(client, message).post(
-				ETitleType.Error,
-				`Error deleting messages: ${err}`,
-				discord.logChannelId
-			);
-		});
+		messageChannel
+			.bulkDelete(count)
+			.then(async () => {
+				logToChannel.post(
+					ETitleType.Info,
+					`**${message.author.username}** delete ${count} messages`,
+					discordEnv.logChannelId
+				);
+			})
+			.catch(async (err) => {
+				logToChannel.post(
+					ETitleType.Error,
+					`Error deleting messages: ${err}`,
+					discordEnv.logChannelId
+				);
+			});
 	}
 };
 

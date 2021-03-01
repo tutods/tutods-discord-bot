@@ -1,4 +1,4 @@
 import { Bot } from './client/Client';
-import { discord } from './configs/environment';
+import { discordEnv } from './configs/environment';
 
-new Bot().start(discord);
+new Bot().start(discordEnv);

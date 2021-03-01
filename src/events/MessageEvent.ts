@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { discord } from '../configs/environment';
+import { discordEnv } from '../configs/environment';
 import { ICommand } from '../interfaces/ICommand';
 import { RunFunction } from '../interfaces/IEvent';
 
@@ -7,13 +7,13 @@ export const run: RunFunction = async (client, message: Message) => {
 	if (
 		message.author.bot ||
 		!message.guild ||
-		!message.content.toLocaleLowerCase().startsWith(discord.prefix)
+		!message.content.toLocaleLowerCase().startsWith(discordEnv.prefix)
 	) {
 		return;
 	}
 
 	const args: string[] = message.content
-		.slice(discord.prefix.length)
+		.slice(discordEnv.prefix.length)
 		.trim()
 		.split(/ +/g);
 

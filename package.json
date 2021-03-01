@@ -4,10 +4,8 @@
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "node dist/index.js",
 		"rimraf": "./node_modules/rimraf/bin.js",
 		"prebuild": "rimraf dist/",
-		"build": "tsc",
 		"dev": " ts-node-dev --respawn --transpile-only --poll ./src/index.ts",
 		"format": "prettier --write ."
 	},
@@ -33,8 +31,7 @@
 		"*.{js,ts,json,scss,css,html,tsx,jsx}": [
 			"prettier --write .",
 			"git add ."
-		],
-		"*.{js,css,md}": "prettier --write"
+		]
 	},
 	"husky": {
 		"hooks": {

@@ -36,10 +36,7 @@ export const run: RunFunction = async (client, message) => {
 			user = message.mentions.users.first();
 		}
 
-		if (
-			parseInt(args[0]) &&
-			args[0] !== message.mentions.users.first().toString()
-		) {
+		if (parseInt(args[0])) {
 			count = parseInt(args[0]);
 		}
 

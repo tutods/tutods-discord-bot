@@ -1,5 +1,5 @@
 import { Client, Message, MessageEmbed, TextChannel } from 'discord.js';
-import { discord } from '../configs/environment';
+import { discordEnv } from '../configs/environment';
 import { ETitleType } from '../enums/ETitleType';
 import { formatCreatedAt } from './FormatCreatedAt';
 
@@ -15,7 +15,7 @@ class LogToChannel {
 	post(title: ETitleType, description: string, channelId?: string): void {
 		if (channelId) {
 			const targetChannel = this.message.guild.channels.cache.get(
-				discord.logChannelId
+				discordEnv.logChannelId
 			) as TextChannel;
 
 			if (targetChannel) {

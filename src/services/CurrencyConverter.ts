@@ -1,20 +1,29 @@
 import axios from 'axios';
 import { apisEnv } from '../configs/environment';
+import { ICurrencyResult } from '../interfaces/ICurrencyResult';
 
-const currencyConverter = async (from: string, to: string, amount: number) => {
+const currencyConverter = (
+	from: string,
+	to: string,
+	amount: string
+): Promise<ICurrencyResult> => {
 	const params = {
 		from,
 		to,
 		amount: amount,
 	};
 
-	const converted = await axios
+	const converted = axios
 		.get(`${apisEnv.currencyApi}/convert`, { params })
 		.then((response) => {
 			return response.data;
+		})
+		.catch((err) => {
+			console.log(err);
+			return;
 		});
 
-	console.log(converted);
+	return converted;
 };
 
 export { currencyConverter };

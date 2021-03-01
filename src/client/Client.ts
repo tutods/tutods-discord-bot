@@ -9,14 +9,15 @@ import {
 } from 'discord.js';
 import glob from 'glob';
 import { promisify } from 'util';
+import { formatCreatedAt } from '../functions/FormatCreatedAt';
 import { ICommand } from '../interfaces/ICommand';
-import { IDiscord } from '../interfaces/IDiscord';
+import { IConfig } from '../interfaces/IConfig';
 import { IEvent } from '../interfaces/IEvent';
 
 const globPromise = promisify(glob);
 
 class Bot extends Client {
-	public config: IDiscord;
+	public config: IConfig;
 
 	public logger: Consola = consola;
 
@@ -33,7 +34,7 @@ class Bot extends Client {
 		});
 	}
 
-	public async start(env: IDiscord): Promise<void> {
+	public async start(env: IConfig): Promise<void> {
 		this.config = env;
 
 		this.login(env.token);
@@ -61,23 +62,8 @@ class Bot extends Client {
 	}
 
 	public embed(options: MessageEmbedOptions, message: Message): MessageEmbed {
-		const createdMsg: Date = message.createdAt;
-
-		const msgDate = createdMsg.toLocaleDateString('pt-PT', {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-		});
-
-		const msgTime = createdMsg.toLocaleTimeString('pt-PT', {
-			hour12: false,
-			hour: '2-digit',
-			minute: '2-digit',
-			second: '2-digit',
-		});
-
 		return new MessageEmbed({ ...options, color: 'RANDOM' }).setFooter(
-			`${message.author.tag} • ${msgDate} ${msgTime}`,
+			`${message.author.tag} • ${formatCreatedAt(message.createdAt)}`,
 			message.author.displayAvatarURL({ format: 'png', dynamic: true })
 		);
 	}

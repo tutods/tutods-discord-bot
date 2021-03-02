@@ -1,5 +1,13 @@
 {
-	"token": "<your-token>",
-	"prefix": "!",
-	"adminLogChannel": "<name-to-admin-logging>"
+	"discord": {
+		"token": "<token>",
+		"prefix": "!",
+		"logChannelId": "<log-channel-id>"
+	},
+	"apis": {
+		"currencyApi": {
+			"baseUrl": "https://v6.exchangerate-api.com/v6",
+			"apiKey": "<your-key>"
+		}
+	}
 }

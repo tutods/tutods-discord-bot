@@ -5,5 +5,8 @@ export interface IDiscordEnv {
 }
 
 export interface IApisEnv {
-	currencyApi: string;
+	currencyApi: {
+		baseUrl: string;
+		apiKey: string;
+	};
 }

@@ -47,7 +47,9 @@ export const run: RunFunction = async (client, message, args) => {
 
 	messageChannel.send(
 		new MessageEmbed({ color: 'BLUE' })
-			.setTitle(`${ECoinSymbol[fromCoin]} ┄┄┄┄ ${ECoinSymbol[toCoin]}`)
+			.setTitle(
+				`**From** ${ECoinSymbol[fromCoin]} ┄ **to** ${ECoinSymbol[toCoin]}`
+			)
 			.addFields(
 				{
 					name: `${ECoinEmoji[fromCoin]} ${fromCoin}`,
@@ -61,7 +63,9 @@ export const run: RunFunction = async (client, message, args) => {
 				},
 				{
 					name: `${ECoinEmoji[toCoin]} ${toCoin}`,
-					value: `${result.result.toFixed(2)} ${ECoinSymbol[toCoin]}`,
+					value: `${result.conversion_result.toFixed(2)} ${
+						ECoinSymbol[toCoin]
+					}`,
 					inline: true,
 				}
 			)

@@ -1,7 +1,6 @@
 export interface ICurrencyResult {
-	success: boolean;
-	query: { from: string; to: string; amount: number };
-	info: { rate: number };
-	date: Date;
-	result: number;
+	base_code: string;
+	target_code: string;
+	conversion_rate: number;
+	conversion_result: number;
 }

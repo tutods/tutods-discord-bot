@@ -7,14 +7,12 @@ const currencyConverter = (
 	to: string,
 	amount: string
 ): Promise<ICurrencyResult> => {
-	const params = {
-		from,
-		to,
-		amount: amount,
-	};
+	const { baseUrl, apiKey } = apisEnv.currencyApi;
 
-	const converted = axios
-		.get(`${apisEnv.currencyApi}/convert`, { params })
+	const result = axios
+		.get(`${baseUrl}/${apiKey}/pair/${from}/${to}`, {
+			params: { amount: amount },
+		})
 		.then((response) => {
 			return response.data;
 		})
@@ -23,7 +21,7 @@ const currencyConverter = (
 			return;
 		});
 
-	return converted;
+	return result;
 };
 
 export { currencyConverter };

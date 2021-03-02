@@ -4,14 +4,8 @@ import { ETitleType } from '../../enums/ETitleType';
 import { LogToChannel } from '../../functions/Log';
 import { RunFunction } from '../../interfaces/ICommand';
 
-export const run: RunFunction = async (client, message) => {
+export const run: RunFunction = async (client, message, args) => {
 	const logToChannel = new LogToChannel(client, message);
-
-	const args = message.content
-		.slice(discordEnv.prefix.length)
-		.trim()
-		.split(/\s+/g)
-		.slice(1);
 
 	const messageChannel: TextChannel = message.channel as TextChannel;
 	try {

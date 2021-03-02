@@ -1,5 +1,4 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { discordEnv } from '../../configs/environment';
 import { ECoinEmoji } from '../../enums/ECoinEmoji';
 import { ECoinSymbol } from '../../enums/ECoinSymbol';
 import { ETitleType } from '../../enums/ETitleType';
@@ -7,13 +6,7 @@ import { LogToChannel } from '../../functions/Log';
 import { RunFunction } from '../../interfaces/ICommand';
 import { currencyConverter } from '../../services/CurrencyConverter';
 
-export const run: RunFunction = async (client, message) => {
-	const args = message.content
-		.slice(discordEnv.prefix.length)
-		.trim()
-		.split(/\s+/g)
-		.slice(1);
-
+export const run: RunFunction = async (client, message, args) => {
 	const messageChannel: TextChannel = message.channel as TextChannel;
 
 	const log = new LogToChannel(client, message);

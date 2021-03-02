@@ -1,17 +1,10 @@
-import { Message } from 'discord.js';
 import { RunFunction } from '../../interfaces/ICommand';
 
 export const run: RunFunction = async (client, message) => {
-	const msg: Message = await message.channel.send(
-		client.embed({ description: 'your ping!' }, message)
-	);
-
-	const timeCalc = msg.createdTimestamp - message.createdTimestamp;
-
-	await msg.edit(
+	await message.channel.send(
 		client.embed(
 			{
-				description: `**WebSocket:** ${client.ws.ping}MS\n**Message edit:** ${timeCalc}`,
+				description: `**Your Ping is** ${client.ws.ping}ms`,
 			},
 			message
 		)

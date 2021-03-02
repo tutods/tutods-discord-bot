@@ -1,9 +1,13 @@
 import { Message } from 'discord.js';
 import { discordEnv } from '../configs/environment';
+import { ETitleType } from '../enums/ETitleType';
+import { LogToChannel } from '../functions/Log';
 import { ICommand } from '../interfaces/ICommand';
 import { RunFunction } from '../interfaces/IEvent';
 
 export const run: RunFunction = async (client, message: Message) => {
+	const log = new LogToChannel(client, message);
+
 	if (
 		message.author.bot ||
 		!message.guild ||
@@ -23,9 +27,7 @@ export const run: RunFunction = async (client, message: Message) => {
 	if (!command) return;
 
 	command.run(client, message, args).catch((err) => {
-		message.channel.send(
-			client.embed({ description: `Error: ${err}` }, message)
-		);
+		log.post(ETitleType.Error, `Error: ${err}`, discordEnv.logChannelId);
 	});
 };
 

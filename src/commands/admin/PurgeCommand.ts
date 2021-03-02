@@ -36,10 +36,10 @@ export const run: RunFunction = async (client, message, args) => {
 
 		// Warning to limit of messages to delete
 		if (count > 100) {
-			logToChannel.post(
-				ETitleType.Warning,
-				`The limit of messages to delete is 100.\nPlease try again!`
-			);
+			// logToChannel.post(
+			// 	ETitleType.Warning,
+			// 	`The limit of messages to delete is 100.\nPlease try again!`
+			// );
 
 			return;
 		}
@@ -65,11 +65,11 @@ export const run: RunFunction = async (client, message, args) => {
 				messageChannel
 					.bulkDelete(messagesToDelete)
 					.then(async () => {
-						logToChannel.post(
-							ETitleType.Info,
-							`**${message.author.username}** delete ${count} messages of **${user.username}**!`,
-							discordEnv.logChannelId
-						);
+						// logToChannel.post(
+						// 	ETitleType.Info,
+						// 	`**${message.author.username}** delete ${count} messages of **${user.username}**!`,
+						// 	discordEnv.logChannelId
+						// );
 					})
 					.catch(async (err) => {
 						logToChannel.post(
@@ -84,11 +84,11 @@ export const run: RunFunction = async (client, message, args) => {
 		messageChannel
 			.bulkDelete(count)
 			.then(async () => {
-				logToChannel.post(
-					ETitleType.Info,
-					`**${message.author.username}** delete ${count} messages`,
-					discordEnv.logChannelId
-				);
+				// logToChannel.post(
+				// 	ETitleType.Info,
+				// 	`**${message.author.username}** delete ${count} messages`,
+				// 	discordEnv.logChannelId
+				// );
 			})
 			.catch(async (err) => {
 				logToChannel.post(

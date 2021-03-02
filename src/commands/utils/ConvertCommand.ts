@@ -24,17 +24,11 @@ export const run: RunFunction = async (client, message, args) => {
 		return;
 	}
 
-	/**
-	 * Validate if
-	 * arg 0/1 not give a NaN
-	 * arg 2 give a NaN
-	 */
 	if (
 		!isNaN(parseInt(args[0])) ||
 		!isNaN(parseInt(args[1])) ||
 		isNaN(parseInt(args[2]))
 	) {
-		console.log('Entrou');
 		// Invalid Command usage
 		log.post(
 			ETitleType.Error,
@@ -48,13 +42,12 @@ export const run: RunFunction = async (client, message, args) => {
 	const toCoin = args[1].toUpperCase();
 	const amount = Number(args[2]).toFixed(2);
 
+	// API Request in CurrencyConvert service
 	const result = await currencyConverter(fromCoin, toCoin, amount);
 
 	messageChannel.send(
 		new MessageEmbed({ color: 'BLUE' })
-			.setTitle(
-				`Conversion from ${ECoinSymbol[fromCoin]} to ${ECoinSymbol[toCoin]}`
-			)
+			.setTitle(`${ECoinSymbol[fromCoin]} ┄┄┄┄ ${ECoinSymbol[toCoin]}`)
 			.addFields(
 				{
 					name: `${ECoinEmoji[fromCoin]} ${fromCoin}`,

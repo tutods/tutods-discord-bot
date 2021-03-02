@@ -35,14 +35,17 @@ class LogToChannel {
 				);
 			}
 		} else {
+			const color =
+				title === ETitleType.Error
+					? 'RED'
+					: title === ETitleType.Info
+					? 'BlUE'
+					: 'YELLOW';
+			console.log(color);
+
 			this.message.channel.send(
 				new MessageEmbed({
-					color:
-						title === ETitleType.Error
-							? 'RED'
-							: title === ETitleType.Info
-							? 'BlUE'
-							: 'YELLOW',
+					color,
 				})
 					.setDescription(description)
 					.setTitle(title)

@@ -9,4 +9,8 @@ export interface IApisEnv {
 		baseUrl: string;
 		apiKey: string;
 	};
+
+	githubApi: {
+		baseUrl: string;
+	};
 }

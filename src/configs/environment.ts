@@ -11,4 +11,5 @@ export const discordEnv: IDiscordEnv = {
 
 export const apisEnv: IApisEnv = {
 	currencyApi: apis.currencyApi,
+	githubApi: apis.githubApi,
 };

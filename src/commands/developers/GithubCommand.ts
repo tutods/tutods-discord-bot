@@ -37,6 +37,15 @@ export const run: RunFunction = async (client, message, args) => {
 	// API Request in GithubRepository service
 	const result = await getGithubRepo(repoInfo);
 
+	if (result === null) {
+		log.post(
+			ETitleType.Error,
+			`Sorry, but we were unable to retrieve data about \`${repoInfo}\` repository!`
+		);
+
+		return;
+	}
+
 	const finalHomeLink =
 		result.homepage &&
 		!['http', 'https'].some((el) => result.homepage.includes(el))
